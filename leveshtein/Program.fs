@@ -45,9 +45,10 @@ let EditChain a b =
                     if (Levenshtein c3 b) < d then yield c3 else ()
         }
         gens
-        |> Seq.map (fun g -> Tree(g, generate g)) |> Seq.toList    
-    let c = generate a
-    in Tree(a, c) 
+        |> Seq.map (fun g -> Tree(g, generate g))
+        |> Seq.toList    
+            
+    in Tree(a, (generate a))
 
 /// Flattens a Tree giving a list of all the paths from the root to the leaves
 let rec Flatten = function
@@ -69,7 +70,6 @@ let PrettyPrint (t: char array list list) =
 let main args =
     let a = Console.ReadLine().ToCharArray() 
     let b = Console.ReadLine().ToCharArray()
-    printfn "%A" (EditChain a b)
     PrettyPrint (Flatten (EditChain a b))   
     0
  

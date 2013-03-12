@@ -1,13 +1,11 @@
 
 module leveshtein.Main
-
+ 
 open System
 open System.Collections.Generic 
-
-open System.Collections.Generic 
-
+ 
 let chars = [|'a'..'z'|]
-
+ 
 let Levenshtein (a: array<char>) (b: array<char>) =
     let cache = Dictionary<_, _>()
     let rec lev i j =
@@ -21,15 +19,16 @@ let Levenshtein (a: array<char>) (b: array<char>) =
             cache.Add((i, j), x)
             x
     in lev a.Length b.Length
-
+ 
 let add i c a = Seq.concat [Seq.take i a; Seq.singleton c; Seq.skip i a] |> Seq.toArray
     
 let delete i a = Seq.concat [Seq.take i a; Seq.skip (i + 1) a] |> Seq.toArray
     
 let change i c a = Seq.concat [Seq.take i a; Seq.singleton c; Seq.skip (i + 1) a] |> Seq.toArray
+ 
+type Tree<'a> = Nil | Tree of 'a * list<Tree<'a>>
 
-type 'a Tree = Nil | Tree of 'a * list<'a Tree>
-
+/// Creates a tree with all the Levenshtein minimum paths from a to b
 let EditChain a b =
     let rec generate a =
         let d = Levenshtein a b
@@ -38,25 +37,27 @@ let EditChain a b =
                 let c1 = delete i a
                 if (Levenshtein c1 b) < d then yield c1 else ()
                 for c in chars do
-                    let c2 = add i c a
+                    let c2 = change i c a
                     if (Levenshtein c2 b) < d then yield c2 else ()
-                    let c3 = change i c a
+            for i in 0..(a.Length) do
+                for c in chars do
+                    let c3 = add i c a
                     if (Levenshtein c3 b) < d then yield c3 else ()
-            }
-        seq {
-            for gen in gens do
-            yield Tree(gen, generate gen)
-         } |> Seq.toList
+        }
+        gens
+        |> Seq.map (fun g -> Tree(g, generate g)) |> Seq.toList    
     let c = generate a
     in Tree(a, c) 
 
+/// Flattens a Tree giving a list of all the paths from the root to the leaves
 let rec Flatten = function
     | Nil -> [[]]
     | Tree(a, []) -> [[a]]
     | Tree(a, ts) ->
-        let ts2 = ts |> List.map(fun t -> Flatten t) |> List.concat
+        let ts2 = ts |> List.map (fun t -> Flatten t) |> List.concat
         in ts2 |> List.map (fun t -> a::t)
 
+/// Prints the edit chain paths given by Flatten
 let PrettyPrint (t: char array list list) =
     let pca (a: char array) = new System.String(a)
     t |> List.iter (fun cw ->
@@ -68,6 +69,7 @@ let PrettyPrint (t: char array list list) =
 let main args =
     let a = Console.ReadLine().ToCharArray() 
     let b = Console.ReadLine().ToCharArray()
+    printfn "%A" (EditChain a b)
     PrettyPrint (Flatten (EditChain a b))   
     0
-
+ 

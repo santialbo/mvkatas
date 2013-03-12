@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{4925A630-B079-445d-BCD4-3A9C94FE9307}") = "cuboides_ascii", "cuboides_ascii\cuboides_ascii.fsproj", "{72FC094B-1A4E-4801-9532-2B49B2921E9A}"
 EndProject
+Project("{4925A630-B079-445d-BCD4-3A9C94FE9307}") = "Levenshtein", "leveshtein\Levenshtein.fsproj", "{DDD81349-F77B-43B9-98FA-2DBE80458B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,8 +15,12 @@ Global
 		{72FC094B-1A4E-4801-9532-2B49B2921E9A}.Debug|x86.Build.0 = Debug|x86
 		{72FC094B-1A4E-4801-9532-2B49B2921E9A}.Release|x86.ActiveCfg = Release|x86
 		{72FC094B-1A4E-4801-9532-2B49B2921E9A}.Release|x86.Build.0 = Release|x86
+		{DDD81349-F77B-43B9-98FA-2DBE80458B47}.Debug|x86.ActiveCfg = Debug|x86
+		{DDD81349-F77B-43B9-98FA-2DBE80458B47}.Debug|x86.Build.0 = Debug|x86
+		{DDD81349-F77B-43B9-98FA-2DBE80458B47}.Release|x86.ActiveCfg = Release|x86
+		{DDD81349-F77B-43B9-98FA-2DBE80458B47}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = cuboides_ascii\cuboides_ascii.fsproj
+		StartupItem = leveshtein\Levenshtein.fsproj
 	EndGlobalSection
 EndGlobal
